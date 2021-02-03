@@ -7,48 +7,52 @@ from fdpclient.client import Client
 # TODO
 # - add tests on fdp
 
-# NOTE: change IP address to domain name after solving FDP server config issue
-base_url = 'http://145.100.57.30'
+base_url = 'http://example.org'
 catalogID = 'catalog01'
-data_url = base_url + '/catalog/' + catalogID
+catalog_url = base_url + '/catalog'
+data_url = catalog_url + '/' + catalogID
 
-@pytest.fixture(scope='class', autouse=True)
-def client():
-    r = requests.delete(data_url)
-    yield Client(base_url)
-    r = requests.delete(data_url)
+# datadir fixture provided via pytest-datadir-ng
+@pytest.fixture()
+def data(datadir):
+    with open(datadir['catalog01.ttl']) as f:
+        return f.read()
+
+@pytest.fixture()
+def data_update(datadir):
+    with open(datadir['catalog01_update.ttl']) as f:
+        return f.read()
+
+@pytest.fixture()
+def client(requests_mock):
+    requests_mock.get(base_url+'/fdp', status_code=200, headers={'content-type': 'text/turtle'})
+    return Client(base_url)
 
 class TestDefault:
-    """Test fdpclient.operations functions"""
+    """Test fdpclient.client.Client methods"""
 
-    # datadir fixture provided via package pytest-datadir-ng
-    def test_create_catalog(self, client, datadir):
+    # requests_mock fixture provided via requests-mock
+    def test_create_catalog(self, client, data, requests_mock):
         """Test create_catalog method"""
-        with open(datadir['catalog01.ttl']) as f:
-            data = f.read()
+        requests_mock.post(catalog_url)
         r = client.create_catalog(data=data)
         assert r is None
 
-    def test_read_catalog(self, client):
+    def test_read_catalog(self, client, data, requests_mock):
         """Test read_catalog method"""
+        requests_mock.get(data_url, text=data)
         r = client.read_catalog(catalogID)
         assert isinstance(r, rdflib.Graph)
         assert  b'hasVersion "1.0"' in r.serialize(format='turtle')
 
-    def test_update_catalog(self, client, datadir):
+    def test_update_catalog(self, client, data_update, requests_mock):
         """Test update_catalog method"""
-        with open(datadir['catalog01_update.ttl']) as f:
-            data = f.read()
-        r = client.update_catalog(catalogID, data=data)
+        requests_mock.put(data_url, text=data_update)
+        r = client.update_catalog(catalogID, data=data_update)
         assert r is None
-        r = client.read_catalog(catalogID)
-        assert  b'hasVersion "2.0"' in r.serialize(format='turtle')
 
-    def test_delete_catalog(self, client, capsys):
+    def test_delete_catalog(self, client, requests_mock):
         """Test delete_catalog method"""
+        requests_mock.delete(data_url)
         r = client.delete_catalog(catalogID)
         assert r is None
-        with pytest.raises(RuntimeError):
-            r = client.delete_catalog(catalogID)
-        captured = capsys.readouterr()
-        assert "HTTP error" in captured.out
