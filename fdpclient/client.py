@@ -57,7 +57,6 @@ class Client:
             r = self._request('create', '', data=data, format=format, **kwargs)
         else:
             r = self._request('create', 'fdp', data=data, format=format, **kwargs)
-        return r
 
     def create_catalog(self, data, format='turtle', **kwargs):
         """Create a new catalog metadata.
@@ -71,7 +70,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('create', 'catalog', data=data, format=format, **kwargs)
+        self._request('create', 'catalog', data=data, format=format, **kwargs)
 
     def create_dataset(self, data, format='turtle', **kwargs):
         """Create a new dataset metadata.
@@ -85,7 +84,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('create', 'dataset', data=data, format=format, **kwargs)
+        self._request('create', 'dataset', data=data, format=format, **kwargs)
 
     def create_distribution(self, data, format='turtle', **kwargs):
         """Create a new distribution metadata.
@@ -99,7 +98,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('create', 'distribution', data=data, format=format, **kwargs)
+        self._request('create', 'distribution', data=data, format=format, **kwargs)
 
     # Read metadata
     def read_fdp(self, format='turtle', **kwargs):
@@ -186,7 +185,6 @@ class Client:
             r = self._request('update', '', id='', data=data, format=format, **kwargs)
         else:
             r = self._request('update', 'fdp', id='', data=data, format=format, **kwargs)
-        return r
 
     def update_catalog(self, id, data, format='turtle', **kwargs):
         """Update a catalog metadata.
@@ -201,7 +199,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('update', 'catalog', id=id, data=data, format=format, **kwargs)
+        self._request('update', 'catalog', id=id, data=data, format=format, **kwargs)
 
     def update_dataset(self, id, data, format='turtle', **kwargs):
         """Update a dataset metadata.
@@ -216,7 +214,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('update', 'dataset', id=id, data=data, format=format, **kwargs)
+        self._request('update', 'dataset', id=id, data=data, format=format, **kwargs)
 
     def update_distribution(self, id, data, format='turtle', **kwargs):
         """Update a distribution metadata.
@@ -231,7 +229,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('update', 'distribution', id=id, data=data, format=format, **kwargs)
+        self._request('update', 'distribution', id=id, data=data, format=format, **kwargs)
 
     # Delete metadata
     def delete_catalog(self, id, **kwargs):
@@ -241,7 +239,7 @@ class Client:
             id(str): the identifier of the metadata.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('delete', 'catalog', id=id, **kwargs)
+        self._request('delete', 'catalog', id=id, **kwargs)
 
     def delete_dataset(self, id, **kwargs):
         """Delete a dataset metadata.
@@ -250,7 +248,7 @@ class Client:
             id(str): the identifier of the metadata.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('delete', 'dataset', id=id, **kwargs)
+        self._request('delete', 'dataset', id=id, **kwargs)
 
     def delete_distribution(self, id, **kwargs):
         """Delete a distribution metadata.
@@ -259,7 +257,7 @@ class Client:
             id(str): the identifier of the metadata.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        return self._request('delete', 'distribution', id=id, **kwargs)
+        self._request('delete', 'distribution', id=id, **kwargs)
 
     # Private methods
     def _request(self, operation, type, id=None, data=None, format='turtle', **kwargs):
