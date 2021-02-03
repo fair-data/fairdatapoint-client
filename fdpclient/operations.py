@@ -44,7 +44,7 @@ def read(url, format='turtle', **kwargs):
         **kwargs: Optional arguments that :func:`requests.request` takes.
 
     Returns:
-        :class:`requests.Response`: response of the read request.
+        :class:`rdflib.Graph`:  RDF graph of the requested metadata.
     """
     logger.debug(f'Read metadata: {url}')
     if 'headers' in kwargs:

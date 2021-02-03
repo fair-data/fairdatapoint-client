@@ -60,20 +60,61 @@ class Client:
         return r
 
     def create_catalog(self, data, format='turtle', **kwargs):
-        """Create a new catalog metadata."""
+        """Create a new catalog metadata.
+
+        Args:
+            data(str, bytes or file-like object):
+                the content of metadata to send in the request body.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``content-type``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('create', 'catalog', data=data, format=format, **kwargs)
 
     def create_dataset(self, data, format='turtle', **kwargs):
-        """Create a new dataset metadata."""
+        """Create a new dataset metadata.
+
+        Args:
+            data(str, bytes or file-like object):
+                the content of metadata to send in the request body.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``content-type``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('create', 'dataset', data=data, format=format, **kwargs)
 
     def create_distribution(self, data, format='turtle', **kwargs):
-        """Create a new distribution metadata."""
+        """Create a new distribution metadata.
+
+        Args:
+            data(str, bytes or file-like object):
+                the content of metadata to send in the request body.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``content-type``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('create', 'distribution', data=data, format=format, **kwargs)
 
     # Read metadata
     def read_fdp(self, format='turtle', **kwargs):
-        """Read the fdp metadata."""
+        """Read the fdp metadata.
+
+        Args:
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``accept``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+
+        Returns:
+            :class:`rdflib.Graph`: RDF graph of the requested metadata.
+        """
         if self.host_as_fdp:
             r = self._request('read', '', id='', format=format, **kwargs)
         else:
@@ -90,20 +131,57 @@ class Client:
                 Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
+
+        Returns:
+            :class:`rdflib.Graph`: RDF graph of the requested metadata.
         """
         return self._request('read', 'catalog', id=id, format=format, **kwargs)
 
     def read_dataset(self, id, format='turtle', **kwargs):
-        """Read a dataset metadata."""
+        """Read a dataset metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``accept``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+
+        Returns:
+            :class:`rdflib.Graph`: RDF graph of the requested metadata.
+        """
         return self._request('read', 'dataset', id=id, format=format, **kwargs)
 
     def read_distribution(self, id, format='turtle', **kwargs):
-        """Read a distribution metadata."""
+        """Read a distribution metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``accept``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+
+        Returns:
+            :class:`rdflib.Graph`: RDF graph of the requested metadata.
+        """
         return self._request('read', 'distribution', id=id, format=format, **kwargs)
 
     # Update metadata
-    def update_fdp(self, data, format = 'turtle', **kwargs):
-        """Update the fdp metadata."""
+    def update_fdp(self, data, format='turtle', **kwargs):
+        """Update the fdp metadata.
+
+        Args:
+            data(str, bytes or file-like object):
+                the content of metadata to send in the request body.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``content-type``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         if self.host_as_fdp:
             r = self._request('update', '', id='', data=data, format=format, **kwargs)
         else:
@@ -111,28 +189,76 @@ class Client:
         return r
 
     def update_catalog(self, id, data, format='turtle', **kwargs):
-        """Update a catalog metadata."""
+        """Update a catalog metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            data(str, bytes or file-like object):
+                the content of metadata to send in the request body.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``content-type``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('update', 'catalog', id=id, data=data, format=format, **kwargs)
 
     def update_dataset(self, id, data, format='turtle', **kwargs):
-        """Update a dataset metadata."""
+        """Update a dataset metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            data(str, bytes or file-like object):
+                the content of metadata to send in the request body.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``content-type``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('update', 'dataset', id=id, data=data, format=format, **kwargs)
 
     def update_distribution(self, id, data, format='turtle', **kwargs):
-        """Update a distribution metadata."""
+        """Update a distribution metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            data(str, bytes or file-like object):
+                the content of metadata to send in the request body.
+            format (str, optional): the format of the metadata.
+                This argument overwrites the request header ``content-type``.
+                Available options are 'turtle', 'n3', 'nt', 'xml' and 'json-ld'.
+                Defaults to 'turtle'.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('update', 'distribution', id=id, data=data, format=format, **kwargs)
 
     # Delete metadata
     def delete_catalog(self, id, **kwargs):
-        """Delete a catalog metadata."""
+        """Delete a catalog metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('delete', 'catalog', id=id, **kwargs)
 
     def delete_dataset(self, id, **kwargs):
-        """Delete a dataset metadata."""
+        """Delete a dataset metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('delete', 'dataset', id=id, **kwargs)
 
     def delete_distribution(self, id, **kwargs):
-        """Delete a distribution metadata."""
+        """Delete a distribution metadata.
+
+        Args:
+            id(str): the identifier of the metadata.
+            **kwargs: Optional arguments that :func:`requests.request` takes.
+        """
         return self._request('delete', 'distribution', id=id, **kwargs)
 
     # Private methods
@@ -148,10 +274,10 @@ class Client:
                 When ``host_as_fdp`` is True, the 'fdp' type should be specified
                 as empty string, i.e. ``''``.
             id(str): the identifier of the metadata.
-                Defaults to None.
+                Defaults to `None`.
             data(str, bytes or file-like object):
                 the content of metadata to send in the request body.
-                Defaults to None.
+                Defaults to `None`.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type`` or
                 ``accept``.
@@ -159,6 +285,9 @@ class Client:
                 See :const:`fdpclient.config.DATA_FORMATS`.
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
+
+        Returns:
+            `None` or :class:`rdflib.Graph`: RDF graph of the requested metadata.
         """
 
         request_methods = ('create', 'read', 'update', 'delete')
