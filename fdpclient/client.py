@@ -1,10 +1,11 @@
 import logging
+import requests
 from fdpclient import operations
 
 logger = logging.getLogger(__name__)
 
 class Client:
-    def __init__(self, host, host_as_fdp=False):
+    def __init__(self, host):
         """The Client object to connect to a FAIR Data Point server.
 
         FAIR Data Point server contains 4 types of metadata as described in the
@@ -26,10 +27,6 @@ class Client:
 
         Args:
             host(str): the host URL
-            host_as_fdp(bool): the host is also the fdp, i.e. the host stores
-                the fdp metadata, and the host and fdp share the same URL.
-                Otherwise, the fdp URL should be ``<host>/fdp``.
-                Defaults to False.
 
         Examples:
             >>> client = Client('http://fdp.fairdatapoint.nl`)
@@ -38,7 +35,7 @@ class Client:
             >>> print(fdp_metadata, catalog_metadata)
         """
         self.host = host.rstrip('/')
-        self.host_as_fdp = host_as_fdp
+        self.fdp_url = self._detect_fdp_url()
 
     # Create metadata
     def create_fdp(self, data, format='turtle', **kwargs):
@@ -53,10 +50,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        if self.host_as_fdp:
-            r = self._request('create', '', data=data, format=format, **kwargs)
-        else:
-            r = self._request('create', 'fdp', data=data, format=format, **kwargs)
+        self._request('create', self.fdp_url, data=data, format=format, **kwargs)
 
     def create_catalog(self, data, format='turtle', **kwargs):
         """Create a new catalog metadata.
@@ -114,11 +108,7 @@ class Client:
         Returns:
             :class:`rdflib.Graph`: RDF graph of the requested metadata.
         """
-        if self.host_as_fdp:
-            r = self._request('read', '', id='', format=format, **kwargs)
-        else:
-            r = self._request('read', 'fdp', id='', format=format, **kwargs)
-        return r
+        return self._request('read', self.fdp_url, id='', format=format, **kwargs)
 
     def read_catalog(self, id, format='turtle', **kwargs):
         """Read a catalog metadata.
@@ -181,10 +171,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        if self.host_as_fdp:
-            r = self._request('update', '', id='', data=data, format=format, **kwargs)
-        else:
-            r = self._request('update', 'fdp', id='', data=data, format=format, **kwargs)
+        self._request('update', self.fdp_url, id='', data=data, format=format, **kwargs)
 
     def update_catalog(self, id, data, format='turtle', **kwargs):
         """Update a catalog metadata.
@@ -260,6 +247,32 @@ class Client:
         self._request('delete', 'distribution', id=id, **kwargs)
 
     # Private methods
+    def _detect_fdp_url(self):
+        """Detect the internal path of fdp
+
+        Raises:
+            RuntimeError: failed to find the fdp url
+
+        Returns:
+            str: the internal path of fdp, i.e. 'fdp' or ''.
+        """
+        fmt = 'text/turtle'
+        while True:
+            r = requests.get(self.host + '/fdp', params={'Accept':fmt})
+            if r.status_code == 200 and r.headers['content-type'] == fmt:
+                fdp_url = 'fdp'
+                break
+
+            r = requests.get(self.host, params={'Accept':fmt})
+            if r.status_code == 200 and r.headers['content-type'] == fmt:
+                fdp_url = ''
+                break
+
+            raise RuntimeError('Failed to detect the fdp url. Check if the '
+                    + 'server uses "<host>" or "<host>/fdp" as the fdp url.')
+
+        return fdp_url
+
     def _request(self, operation, type, id=None, data=None, format='turtle', **kwargs):
         """Private request method.
 
@@ -269,8 +282,6 @@ class Client:
                 See :class:`fdpclient.operations`.
             type(str): the type of metadata.
                 Available types: 'fdp', 'catalog', 'dataset' and 'distribution'.
-                When ``host_as_fdp`` is True, the 'fdp' type should be specified
-                as empty string, i.e. ``''``.
             id(str): the identifier of the metadata.
                 Defaults to `None`.
             data(str, bytes or file-like object):
