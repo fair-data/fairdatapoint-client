@@ -42,7 +42,13 @@ setup(
         'requests',
     ],
     extras_require={
-        'tests': ['pytest', 'pytest-datadir-ng', 'pytest-cov', 'coveralls'],
+        'tests': [
+            'pytest',
+            'pytest-datadir-ng',
+            'pytest-cov',
+            'coveralls',
+            'requests-mock'
+        ],
         'docs': ['Sphinx', 'ipython']
     }
 )
