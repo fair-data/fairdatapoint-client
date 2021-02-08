@@ -1,0 +1,13 @@
+requests==2.25.1
+rdflib==4.2.2
+rdflib-jsonld==0.5.0
+
+# for tests
+coveralls==3.0.0
+pytest==6.2.2
+pytest-cov==2.11.1
+pytest-datadir-ng==1.1.1
+requests-mock==1.8.0
+
+# for docs
+-r requirements-docs.txt
