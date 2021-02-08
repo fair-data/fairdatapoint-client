@@ -257,21 +257,17 @@ class Client:
             str: the internal path of fdp, i.e. 'fdp' or ''.
         """
         fmt = 'text/turtle'
-        while True:
-            r = requests.get(self.host + '/fdp', params={'Accept':fmt})
-            if r.status_code == 200 and r.headers['content-type'] == fmt:
-                fdp_url = 'fdp'
-                break
 
-            r = requests.get(self.host, params={'Accept':fmt})
-            if r.status_code == 200 and r.headers['content-type'] == fmt:
-                fdp_url = ''
-                break
+        r = requests.get(self.host + '/fdp', params={'Accept':fmt})
+        if r.status_code == 200 and r.headers['content-type'] == fmt:
+            return 'fdp'
 
-            raise RuntimeError('Failed to detect the fdp url. Check if the '
-                    + 'server uses "<host>" or "<host>/fdp" as the fdp url.')
+        r = requests.get(self.host, params={'Accept':fmt})
+        if r.status_code == 200 and r.headers['content-type'] == fmt:
+            return ''
 
-        return fdp_url
+        raise RuntimeError('Failed to detect the fdp url. Check if the server '
+                        + 'uses "<host>" or "<host>/fdp" as the fdp url.')
 
     def _request(self, operation, type, id=None, data=None, format='turtle', **kwargs):
         """Private request method.
