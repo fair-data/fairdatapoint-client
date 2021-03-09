@@ -10,7 +10,7 @@ def create(url, data, format='turtle', **kwargs):
 
     Args:
         url(str): URL for creating a metadata.
-        data(str, bytes or file-like object):
+        data(str, bytes, file-like object or :class:`rdflib.Graph`):
             the content of metadata to send in the request body.
         format (str, optional): the format of the metadata.
             This argument overwrites the request header ``content-type``.
@@ -22,6 +22,7 @@ def create(url, data, format='turtle', **kwargs):
     if 'content-type' in kwargs:
         kwargs['headers']['content-type'] = DATA_FORMATS[format]
     try:
+        data = _check_data(data, format)
         r = requests.post(url, data, **kwargs)
     except Exception as error:
         print(f'Unexpected error when connecting to {url}\n')
@@ -70,7 +71,7 @@ def update(url, data, format='turtle', **kwargs):
 
     Args:
         url(str): URL for updating a metadata.
-        data(str, bytes or file-like object):
+        data(str, bytes, file-like object or :class:`rdflib.Graph`):
             the content of metadata to send in the request body.
         format (str, optional): the format of the metadata.
             This argument overwrites the request header ``content-type``.
@@ -82,6 +83,7 @@ def update(url, data, format='turtle', **kwargs):
     if 'content-type' in kwargs:
         kwargs['headers']['content-type'] = DATA_FORMATS[format]
     try:
+        data = _check_data(data, format)
         r = requests.put(url, data, **kwargs)
     except Exception as error:
         print(f'Unexpected error when connecting to {url}\n')
@@ -110,3 +112,10 @@ def delete(url, **kwargs):
             print(f'HTTP error: {r.status_code} {r.reason} for {url}',
                   f'\nResponse message: {r.text}')
             raise
+
+def _check_data(data, format):
+    """Check input data type and convert Graph data to bytes"""
+    if isinstance(data, rdflib.Graph):
+        return data.serialize(format=format)
+    else:
+        return data

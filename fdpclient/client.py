@@ -42,7 +42,7 @@ class Client:
         """Create fdp metadata.
 
         Args:
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -56,7 +56,7 @@ class Client:
         """Create a new catalog metadata.
 
         Args:
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -70,7 +70,7 @@ class Client:
         """Create a new dataset metadata.
 
         Args:
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -84,7 +84,7 @@ class Client:
         """Create a new distribution metadata.
 
         Args:
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -163,7 +163,7 @@ class Client:
         """Update the fdp metadata.
 
         Args:
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -178,7 +178,7 @@ class Client:
 
         Args:
             id(str): the identifier of the metadata.
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -193,7 +193,7 @@ class Client:
 
         Args:
             id(str): the identifier of the metadata.
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -208,7 +208,7 @@ class Client:
 
         Args:
             id(str): the identifier of the metadata.
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
             format (str, optional): the format of the metadata.
                 This argument overwrites the request header ``content-type``.
@@ -280,7 +280,7 @@ class Client:
                 Available types: 'fdp', 'catalog', 'dataset' and 'distribution'.
             id(str): the identifier of the metadata.
                 Defaults to `None`.
-            data(str, bytes or file-like object):
+            data(str, bytes, file-like object or :class:`rdflib.Graph`):
                 the content of metadata to send in the request body.
                 Defaults to `None`.
             format (str, optional): the format of the metadata.

@@ -22,6 +22,20 @@ def data_update(datadir):
     with open(datadir['catalog01_update.ttl']) as f:
         return f.read()
 
+@pytest.fixture()
+def graph_data(datadir):
+    with open(datadir['catalog01.ttl']) as f:
+        g = rdflib.Graph()
+        g.parse(data=f.read(), format='turtle')
+        return g
+
+@pytest.fixture()
+def graph_data_update(datadir):
+    with open(datadir['catalog01_update.ttl']) as f:
+        g = rdflib.Graph()
+        g.parse(data=f.read(), format='turtle')
+        return g
+
 class TestDefault:
     """Test fdpclient.operations functions"""
 
@@ -49,4 +63,19 @@ class TestDefault:
         """Test read function"""
         requests_mock.delete(data_url)
         r = operations.delete(data_url)
+        assert r is None
+
+class TestGraphData:
+    """Test graph data as input of fdpclient.operations functions"""
+
+    def test_create(self, graph_data, requests_mock):
+        """Test create function"""
+        requests_mock.post(base_url)
+        r = operations.create(base_url, data=graph_data)
+        assert r is None
+
+    def test_update(self, graph_data_update, requests_mock):
+        """Test update function"""
+        requests_mock.put(data_url)
+        r = operations.update(data_url, data=graph_data_update)
         assert r is None
