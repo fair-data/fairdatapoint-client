@@ -10,7 +10,7 @@ def create(url, data, format='turtle', **kwargs):
 
     Args:
         url(str): URL for creating a metadata.
-        data(str, bytes or file-like object):
+        data(str, bytes, file-like object or :class:`rdflib.Graph`):
             the content of metadata to send in the request body.
         format (str, optional): the format of the metadata.
             This argument overwrites the request header ``content-type``.
@@ -71,7 +71,7 @@ def update(url, data, format='turtle', **kwargs):
 
     Args:
         url(str): URL for updating a metadata.
-        data(str, bytes or file-like object):
+        data(str, bytes, file-like object or :class:`rdflib.Graph`):
             the content of metadata to send in the request body.
         format (str, optional): the format of the metadata.
             This argument overwrites the request header ``content-type``.
