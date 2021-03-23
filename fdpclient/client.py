@@ -35,7 +35,7 @@ class Client:
             >>> print(fdp_metadata, catalog_metadata)
         """
         self.host = host.rstrip('/')
-        self.fdp_url = self._detect_fdp_url()
+        self.fdp_id = self._detect_fdp_url()
 
     # Create metadata
     def create_fdp(self, data, format='turtle', **kwargs):
@@ -50,7 +50,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        self._request('create', self.fdp_url, data=data, format=format, **kwargs)
+        self._request('create', self.fdp_id, data=data, format=format, **kwargs)
 
     def create_catalog(self, data, format='turtle', **kwargs):
         """Create a new catalog metadata.
@@ -108,7 +108,7 @@ class Client:
         Returns:
             :class:`rdflib.Graph`: RDF graph of the requested metadata.
         """
-        return self._request('read', self.fdp_url, id='', format=format, **kwargs)
+        return self._request('read', self.fdp_id, id='', format=format, **kwargs)
 
     def read_catalog(self, id, format='turtle', **kwargs):
         """Read a catalog metadata.
@@ -171,7 +171,7 @@ class Client:
                 Defaults to 'turtle'.
             **kwargs: Optional arguments that :func:`requests.request` takes.
         """
-        self._request('update', self.fdp_url, id='', data=data, format=format, **kwargs)
+        self._request('update', self.fdp_id, id='', data=data, format=format, **kwargs)
 
     def update_catalog(self, id, data, format='turtle', **kwargs):
         """Update a catalog metadata.
