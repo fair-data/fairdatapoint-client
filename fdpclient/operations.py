@@ -20,7 +20,10 @@ def create(url, data, format='turtle', **kwargs):
     """
     logger.debug(f'Create metadata on {url} with the content: \n{data}')
     if 'headers' in kwargs:
-        kwargs['headers']['content-type'] = DATA_FORMATS[format]
+        kwargs['headers'].update({'content-type': DATA_FORMATS[format]})
+    else:
+        kwargs.update({'headers': {'content-type': DATA_FORMATS[format]}})
+
     try:
         data = _check_data(data, format)
         r = requests.post(url, data, **kwargs)
@@ -49,7 +52,10 @@ def read(url, format='turtle', **kwargs):
     """
     logger.debug(f'Read metadata: {url}')
     if 'headers' in kwargs:
-        kwargs['headers']['accept'] = DATA_FORMATS[format]
+        kwargs['headers'].update({'content-type': DATA_FORMATS[format]})
+    else:
+        kwargs.update({'headers': {'content-type': DATA_FORMATS[format]}})
+
     try:
         r = requests.get(url, **kwargs)
     except Exception as error:
@@ -81,7 +87,10 @@ def update(url, data, format='turtle', **kwargs):
     """
     logger.debug(f'Update metadata on {url} with the content: \n{data}')
     if 'headers' in kwargs:
-        kwargs['headers']['content-type'] = DATA_FORMATS[format]
+        kwargs['headers'].update({'content-type': DATA_FORMATS[format]})
+    else:
+        kwargs.update({'headers': {'content-type': DATA_FORMATS[format]}})
+
     try:
         data = _check_data(data, format)
         r = requests.put(url, data, **kwargs)
