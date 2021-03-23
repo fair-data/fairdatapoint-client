@@ -19,7 +19,7 @@ def create(url, data, format='turtle', **kwargs):
         **kwargs: Optional arguments that :func:`requests.request` takes.
     """
     logger.debug(f'Create metadata on {url} with the content: \n{data}')
-    if 'content-type' in kwargs:
+    if 'headers' in kwargs:
         kwargs['headers']['content-type'] = DATA_FORMATS[format]
     try:
         data = _check_data(data, format)
@@ -80,7 +80,7 @@ def update(url, data, format='turtle', **kwargs):
         **kwargs: Optional arguments that :func:`requests.request` takes.
     """
     logger.debug(f'Update metadata on {url} with the content: \n{data}')
-    if 'content-type' in kwargs:
+    if 'headers' in kwargs:
         kwargs['headers']['content-type'] = DATA_FORMATS[format]
     try:
         data = _check_data(data, format)
