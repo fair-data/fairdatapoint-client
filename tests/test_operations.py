@@ -64,24 +64,25 @@ class TestDefault:
     # test 'format' parameter
     def test_create_format(self, data, requests_mock):
         """Test create function parameter `format` overwriting `content-type`"""
-        requests_mock.post(base_url)
-        r = operations.create(base_url, data=data,
-            **{'headers': {'content-type': 'application/ld+json'}})
+        requests_mock.post(base_url, request_headers={'content-type': 'text/turtle'})
+        r = operations.create(base_url, data=data, format='turtle',
+            headers={'content-type': 'application/ld+json'})
         assert r is None
 
     def test_read_format(self, data, requests_mock):
         """Test read function parameter `format` overwriting `accept`"""
-        requests_mock.get(data_url, text=data)
-        r = operations.read(data_url,
-            **{'headers': {'accept': 'application/ld+json'}})
+        requests_mock.get(data_url, text=data,
+            request_headers={'content-type': 'text/turtle'})
+        r = operations.read(data_url, format='turtle',
+            headers={'content-type': 'application/ld+json'})
         assert isinstance(r, rdflib.Graph)
         assert  b'hasVersion "1.0"' in r.serialize(format='turtle')
 
     def test_update_format(self, data_update, requests_mock):
         """Test update function parameter `format` overwriting `content-type`"""
-        requests_mock.put(data_url)
-        r = operations.update(data_url, data=data_update,
-            **{'headers': {'content-type': 'application/ld+json'}})
+        requests_mock.put(data_url, request_headers={'content-type': 'text/turtle'})
+        r = operations.update(data_url, data=data_update, format='turtle',
+            headers={'content-type': 'application/ld+json'})
         assert r is None
 
 
