@@ -1,39 +1,91 @@
 ==========================
 FAIR Data Point API Client
 ==========================
+.. contents::
+    :depth: 3
 
 .. meta::
    :description: A collection of tutorials and guides for fairdatapoint-client package.
    :keywords: fairdatapoint, metadata, guide, tutorial, doc
 
-fairdatapoint-client is a simple and elegant Python package to work with REST
-APIs of FAIR Data Point.
+fairdatapoint-client is a simple and elegant Python package to work with
+REST APIs of `FAIR Data Point <https://github.com/fair-data/fairdatapoint>`_.
 
------------------------------------------------------------------------------
+The supported APIs are listed below:
 
-**The power of fairdatapoint-client:**
+.. list-table::
+   :widths: 20 30 40
+   :header-rows: 1
 
-.. ipython:: python
+   * - FDP Layers
+     - Path Endpoint
+     - Specific Resource Endpoint
+   * - fdp
+     - [baseURL] or [baseURL]/fdp
+     -
+   * - catalog
+     - [baseURL]/catalog
+     - [baseURL]/catalog/[catalogID]
+   * - dataset
+     - [baseURL]/dataset
+     - [baseURL]/dataset/[datasetID]
+   * - distribution
+     - [baseURL]/distribution
+     - [baseURL]/distribution/[distributionID]
 
-    from fdpclient import operations
-    r = operations.read('http://145.100.57.30/catalog/catalog02')
-    print(r.serialize(format="turtle").decode("utf-8"))
+Quick Start
+-----------
 
+Using Client
 
-.. ipython:: python
+.. code-block:: python
 
     from fdpclient.client import Client
-    client = Client('http://145.100.57.30')
-    r = client.read_catalog('catalog02')
+
+    # create a client with base URL
+    client = Client('http://example.org')
+
+    # create metadata
+    with open('catalog01.ttl') as f:
+        data = f.read()
+    client.create_catalog(data)
+
+    # let's assume the catalogID was assigned as 'catalog01'
+    # read metadata, return a RDF graph
+    r = client.read_catalog('catalog01')
     print(r.serialize(format="turtle").decode("utf-8"))
 
-User Guide
-----------
-.. toctree::
-    :maxdepth: 3
+    # update metadata
+    with open('catalog01_update.ttl') as f:
+        data_update = f.read()
+    client.update_catalog('catalog01', data_update)
 
-    Quick Start <tutorial>
-    APIs <api>
+    # delete metadata
+    client.delete_catalog('catalog01')
+
+Using operation functions
+
+.. code-block:: python
+
+
+    from fdpclient import operations
+
+    # create metadata
+    with open('catalog01.ttl') as f:
+    data = f.read()
+    operations.create('http://example.org/catalog', data)
+
+    # read metadata, return a RDF graph
+    r = operations.read('http://example.org/catalog/catalog01')
+    print(r.serialize(format="turtle").decode("utf-8"))
+
+    # update metadata
+    with open('catalog01_update.ttl') as f:
+        data_update = f.read()
+    operations.update('http://example.org/catalog/catalog01', data_update)
+
+    # delete metadata
+    operations.delete('http://example.org/catalog/catalog01')
 
 
 List of Methods/Functions
