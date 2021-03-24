@@ -8,8 +8,9 @@ FAIR Data Point API Client
    :description: A collection of tutorials and guides for fairdatapoint-client package.
    :keywords: fairdatapoint, metadata, guide, tutorial, doc
 
-fairdatapoint-client is a simple and elegant Python package to work with
-REST APIs of `FAIR Data Point <https://github.com/fair-data/fairdatapoint>`_.
+fairdatapoint-client is a simple and elegant library to interact with
+`FAIR Data Point <https://github.com/fair-data/fairdatapoint>`_ resources from
+Python, e.g. read and write catalogs, datasets and distributions in an FDP server.
 
 The supported APIs are listed below:
 
