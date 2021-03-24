@@ -1,35 +1,113 @@
 [![PyPI](https://img.shields.io/pypi/v/fairdatapoint-client)](https://pypi.org/project/fairdatapoint-client/)
 [![Build_Test](https://github.com/fair-data/fairdatapoint-client/actions/workflows/build_test.yml/badge.svg)](https://github.com/fair-data/fairdatapoint-client/actions/workflows/build_test.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/240d21007f7f41259231141aba79ef1f)](https://www.codacy.com/gh/fair-data/fairdatapoint-client/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fair-data/fairdatapoint-client&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/fair-data/fairdatapoint-client/badge.svg?branch=master)](https://coveralls.io/github/fair-data/fairdatapoint-client?branch=master)
-
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fair-data_fairdatapoint-client&metric=alert_status)](https://sonarcloud.io/dashboard?id=fair-data_fairdatapoint-client)
 
 # fairdatapoint-client
 
-The `fairdatapoint-client` is a simple and elegant Python package to work with
-REST APIs of FAIR Data Point.
+### Contents
+
+-   [Overview](#overview)
+-   [Installation](#installation)
+-   [Quick Tutorial](#Tutorial)
+-   [Issues & Contributing](#Issues-and-Contributing)
+-   [License](./LICENSE)
+
+## Overview
+
+fairdatapoint-client is a simple and elegant Python package to work with
+REST APIs of [FAIR Data Point](https://github.com/fair-data/fairdatapoint).
+
+The supported APIs are listed below:
+
+| FDP Layers   | Path Endpoint               | Specific Resource Endpoint              |
+|--------------|-----------------------------|-----------------------------------------|
+| fdp          | [baseURL] or [baseURL]/fdp  |                                         |
+| catalog      | [baseURL]/catalog           | [baseURL]/catalog/[catalogID]           |
+| dataset      | [baseURL]/dataset           | [baseURL]/dataset/[datasetID]           |
+| distribution | [baseURL]/distribution      | [baseURL]/distribution/[distributionID] |
 
 ## Installation
 
-To install fairdatapoint-client, do:
+It requires a Python version of 3.7, 3.8 or 3.9.
 
-``` {.sourceCode .console}
+#### Stable Release
+
+The fairdatapoint-client is available on [PyPI](https://pypi.org/project/fairdatapoint-client/):
+
+-   Install the module `pip install fairdatapoint-client`
+
+#### Development Version
+
+You can also install from the latest source code:
+
+```{.sourceCode .console}
 git clone https://github.com/fair-data/fairdatapoint-client.git
 cd fairdatapoint-client
 pip install .
 ```
 
-Run tests (including coverage) with:
+To run tests (including coverage):
 
-``` {.sourceCode .console}
-python setup.py test
+```{.sourceCode .console}
+pip install '.[tests]'
+pytest
 ```
 
-## Contributing
+
+## Tutorial
+
+### Using Client
+```python
+from fdpclient.client import Client
+
+# create a client with base URL
+client = Client('http://example.org')
+
+# create metadata
+with open('catalog01.ttl') as f:
+    data = f.read()
+client.create_catalog(data)
+
+# let's assume the catalogID was assigned as 'catalog01'
+# read metadata, return a RDF graph
+r = client.read_catalog('catalog01')
+print(r.serialize(format="turtle").decode("utf-8"))
+
+# update metadata
+with open('catalog01_update.ttl') as f:
+    data_update = f.read()
+client.update_catalog('catalog01', data_update)
+
+# delete metadata
+client.delete_catalog('catalog01')
+```
+
+### Using operation functions
+```python
+from fdpclient import operations
+
+# create metadata
+with open('catalog01.ttl') as f:
+    data = f.read()
+operations.create('http://example.org/catalog', data)
+
+# read metadata, return a RDF graph
+r = operations.read('http://example.org/catalog/catalog01')
+print(r.serialize(format="turtle").decode("utf-8"))
+
+# update metadata
+with open('catalog01_update.ttl') as f:
+    data_update = f.read()
+operations.update('http://example.org/catalog/catalog01', data_update)
+
+# delete metadata
+operations.delete('http://example.org/catalog/catalog01')
+```
+
+## Issues and Contributing
+If you have questions or find a bug, please report the issue in the
+[Github issue channel](https://github.com/fair-data/fairdatapoint-client/issues).
 
 If you want to contribute to the development of fairdatapoint-client, have a
 look at the [contribution guidelines](CONTRIBUTING.rst).
-
-## License
-
-Copyright (c) 2021, Netherlands eScience Center
