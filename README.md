@@ -15,8 +15,9 @@
 
 ## Overview
 
-fairdatapoint-client is a simple and elegant Python package to work with
-REST APIs of [FAIR Data Point](https://github.com/fair-data/fairdatapoint).
+fairdatapoint-client is a simple and elegant library to interact with
+[FAIR Data Point](https://github.com/fair-data/fairdatapoint) resources from
+Python, e.g. read and write catalogs, datasets and distributions in an FDP server.
 
 The supported APIs are listed below:
 
@@ -33,13 +34,15 @@ It requires a Python version of 3.7, 3.8 or 3.9.
 
 #### Stable Release
 
-The fairdatapoint-client is available on [PyPI](https://pypi.org/project/fairdatapoint-client/):
+The fairdatapoint-client is available on [PyPI](https://pypi.org/project/fairdatapoint-client/),
+you can install it using:
 
--   Install the module `pip install fairdatapoint-client`
+`pip install fairdatapoint-client`
 
 #### Development Version
 
-You can also install from the latest source code:
+You can also install from the latest source code, but note that the
+in-development version might be unstable:
 
 ```{.sourceCode .console}
 git clone https://github.com/fair-data/fairdatapoint-client.git
