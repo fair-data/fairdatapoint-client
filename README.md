@@ -3,6 +3,7 @@
 [![Build_Test](https://github.com/fair-data/fairdatapoint-client/actions/workflows/build_test.yml/badge.svg)](https://github.com/fair-data/fairdatapoint-client/actions/workflows/build_test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/fair-data/fairdatapoint-client/badge.svg?branch=master)](https://coveralls.io/github/fair-data/fairdatapoint-client?branch=master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fair-data_fairdatapoint-client&metric=alert_status)](https://sonarcloud.io/dashboard?id=fair-data_fairdatapoint-client)
+[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green)](https://fair-software.eu)
 
 
 # fairdatapoint-client
