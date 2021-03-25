@@ -19,6 +19,7 @@ setup(
     version=version['__version__'],
     description="FAIR Data Point API client",
     long_description=readme + '\n\n',
+    long_description_content_type='text/markdown',
     author="Cunliang Geng",
     author_email='c.geng@esciencecenter.nl',
     url='https://github.com/fair-data/fairdatapoint-client',
