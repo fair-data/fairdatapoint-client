@@ -52,7 +52,7 @@ class TestDefault:
         requests_mock.get(data_url, text=data)
         r = client.read_catalog(catalogID)
         assert isinstance(r, rdflib.Graph)
-        assert  b'hasVersion "1.0"' in r.serialize(format='turtle')
+        assert  'hasVersion "1.0"' in r.serialize(format='turtle')
 
     def test_update_catalog(self, client, data_update, requests_mock):
         """Test update_catalog method"""
@@ -78,7 +78,7 @@ class TestDefault:
         requests_mock.get(fdp_url, text=data_fdp)
         r = client.read_fdp()
         assert isinstance(r, rdflib.Graph)
-        assert  b'hasVersion "1.0"' in r.serialize(format='turtle')
+        assert  'hasVersion "1.0"' in r.serialize(format='turtle')
 
     def test_update_fdp(self, client, data_fdp_update, requests_mock):
         """Test update_fdp method"""

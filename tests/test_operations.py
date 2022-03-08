@@ -47,7 +47,7 @@ class TestDefault:
         requests_mock.get(data_url, text=data)
         r = operations.read(data_url)
         assert isinstance(r, rdflib.Graph)
-        assert  b'hasVersion "1.0"' in r.serialize(format='turtle')
+        assert  'hasVersion "1.0"' in r.serialize(format='turtle')
 
     def test_update(self, data_update, requests_mock):
         """Test update function"""
@@ -76,7 +76,7 @@ class TestDefault:
         r = operations.read(data_url, format='turtle',
             headers={'content-type': 'application/ld+json'})
         assert isinstance(r, rdflib.Graph)
-        assert  b'hasVersion "1.0"' in r.serialize(format='turtle')
+        assert  'hasVersion "1.0"' in r.serialize(format='turtle')
 
     def test_update_format(self, data_update, requests_mock):
         """Test update function parameter `format` overwriting `content-type`"""
