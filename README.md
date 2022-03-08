@@ -1,5 +1,6 @@
 [![PyPI](https://img.shields.io/pypi/v/fairdatapoint-client)](https://pypi.org/project/fairdatapoint-client/)
 [![Documentation Status](https://readthedocs.org/projects/fairdatapoint-client/badge/?version=latest)](https://fairdatapoint-client.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/334084536.svg)](https://zenodo.org/badge/latestdoi/334084536)
 [![Build_Test](https://github.com/fair-data/fairdatapoint-client/actions/workflows/build_test.yml/badge.svg)](https://github.com/fair-data/fairdatapoint-client/actions/workflows/build_test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/fair-data/fairdatapoint-client/badge.svg?branch=master)](https://coveralls.io/github/fair-data/fairdatapoint-client?branch=master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fair-data_fairdatapoint-client&metric=alert_status)](https://sonarcloud.io/dashboard?id=fair-data_fairdatapoint-client)
