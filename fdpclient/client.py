@@ -4,8 +4,9 @@ from fdpclient import operations
 
 logger = logging.getLogger(__name__)
 
+
 class Client:
-    def __init__(self, host):
+    def __init__(self, host: str, username: str = None, password: str = None):
         """The Client object to connect to a FAIR Data Point server.
 
         FAIR Data Point server contains 4 types of metadata as described in the
@@ -27,6 +28,8 @@ class Client:
 
         Args:
             host(str): the host URL
+            username(str, optional): username for authentication at FDP
+            password(str, optional): password for authentication at FDP
 
         Examples:
             >>> client = Client('http://fdp.fairdatapoint.nl`)
@@ -34,11 +37,38 @@ class Client:
             >>> catalog_metadata = client.read_catalog('catalog01')
             >>> print(fdp_metadata, catalog_metadata)
         """
-        self.host = host.rstrip('/')
+        self.host = host.rstrip("/")
         self.fdp_id = self._detect_fdp_url()
+        self.__token = None
+
+        if username and password:
+            self.__token = self.login_fdp(username, password)
+
+    def login_fdp(self, username: str, password: str) -> str:
+        """Login to an fdp and acquire token
+
+        Parameters
+        ----------
+        username : str
+            _description_
+        password : str
+            _description_
+
+        Returns:
+
+        """
+        token_response = requests.post(
+            f"{self.host}/tokens",
+            json={"email": username, "password": password},
+        )
+        token_response.raise_for_status()
+        response = token_response.json()
+        token = response["token"]
+        self.__token = token
+        return token
 
     # Create metadata
-    def create_fdp(self, data, format='turtle', **kwargs):
+    def create_fdp(self, data, format="turtle", **kwargs):
         """Create fdp metadata.
 
         Args:
@@ -314,7 +344,10 @@ class Client:
 
         logger.debug(f'Request: {operation} metadata on {url}')
         request = getattr(operations, operation)
-        if operation == 'delete':
+
+        if self.__token:
+            kwargs.update({"headers": {"Authorization": f"Bearer {self.__token}"}})
+
             r = request(url=url, data=data, **kwargs)
         else:
             r = request(url=url, data=data, format=format, **kwargs)
